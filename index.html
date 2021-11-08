@@ -13,13 +13,35 @@
             <h1 class="header"><a href="index.html">TICK TACK TOE</a></h1>
         </div>
     </header>
-    <h2 class="current-player">
-        Player 1 (X) to play
-    </h1>
+
+
+    <h2 class="current-player">Player 1 (X) to play</h2>
+
+
     <div class="container">
-        <div class="player-form-container"></div>
+        <div class="player-form-container">
+            <form class="player-form">
+                <div class="form-container">
+                    First player name: <input type="text" class="fPlayerName"><br>
+                    Second player name: <input type="text" class="sPlayerName"><br>
+                </div>
+                <div class="chooseSign">
+                    <div class="choose-sign-pOne">
+                        <h3 class="sign signOne">X</h3>
+                        <h3 class="sign signOne">O</h3>
+                    </div>
+                    <div class="choose-sign-pTwo">
+                        <h3 class="sign signTwo">X</h3>
+                        <h3 class="sign signTwo">O</h3>
+                    </div>
+                </div>
+                <input type="button" class="formBtn" value="Submit">
+              </form>
+        </div>
         <div class="container-game"></div>
     </div>
+
+
     <div class="button-container">
         <button class="restart">RESTART</button>
     </div>

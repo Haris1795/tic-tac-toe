@@ -6,10 +6,6 @@ function Player(name, tag) {
 const enterPlayerInfo = (() => {
     const form = document.createElement('input')
     const formContainer = document.querySelector('.player-form-container')
-    formContainer.appendChild(form)
-    form.classList.add('player-form')
-
-
 })()
 
 const player1 = new Player('Haris', 'X');
@@ -32,6 +28,90 @@ const playerTurn = (() => {
     div.addEventListener('click', makePlayerMove())
 });
 
-const makePlayerMove = () => {
+const makePlayerMove = () => {}
 
+const tagPicker = (()=> {
+    const pOneTags = document.querySelectorAll('.signOne')
+    const pTwoTags = document.querySelectorAll('.signTwo')
+
+    let status = false
+    let status2 = false
+
+    pOneTags.forEach((e)=>{
+        console.log('p1s firing')
+        e.addEventListener('click', () => {
+            if (status === false) {
+                e.classList.add('signBorder')
+                status = true         
+            }
+            else if (status === true) {
+                if(e.classList.contains('signBorder')) {
+                    e.classList.remove('signBorder')
+                    status = false
+                }
+                else {return}
+            }
+        })
+    })
+
+
+    pTwoTags.forEach((e)=>{
+        console.log('p2s firing')
+        e.addEventListener('click', () => {
+            if (status2 === false) {
+                e.classList.add('signBorder')
+                status2 = true         
+            }
+            else if (status2 === true) {
+                if(e.classList.contains('signBorder')) {
+                    e.classList.remove('signBorder')
+                    status2 = false
+                }
+                else {return}
+            }
+        })
+    })
+})()
+
+function getPlayerNames() {
+    const player1 = document.querySelector('.fPlayerName')
+    const player2 = document.querySelector('.sPlayerName')
+    let p1 = player1.value
+    let p2 = player2.value
+    return {p1, p2}
 }
+
+function getPlayerTags(){
+    const pOneTags = document.querySelectorAll('.signOne')
+    const pTwoTags = document.querySelectorAll('.signTwo')
+
+    let p1Tag;
+    let p2Tag;
+
+    pOneTags.forEach((e)=>{
+        if(e.classList.contains('signBorder')){
+            p1Tag = e.textContent
+        }
+    })
+
+    pTwoTags.forEach((e)=>{
+        if(e.classList.contains('signBorder')){
+            p2Tag = e.textContent
+        }
+    })
+    return {p1Tag, p2Tag}
+}
+
+const submitForm = (() => {
+    let pOne,
+        pTwo,
+        pOneSign,
+        pTwoSign;
+
+    const btn = document.querySelector('.formBtn')
+    btn.addEventListener('click', () => {
+        const playerNames = getPlayerNames()
+        const playerSigns = getPlayerTags()
+        console.log(playerNames, playerSigns)
+    })
+})()
