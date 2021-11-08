@@ -3,6 +3,7 @@ function Player(name, tag) {
     this.tag = tag
 };
 
+
 const enterPlayerInfo = (() => {
     const form = document.createElement('input')
     const formContainer = document.querySelector('.player-form-container')
@@ -103,15 +104,19 @@ function getPlayerTags(){
 }
 
 const submitForm = (() => {
-    let pOne,
-        pTwo,
-        pOneSign,
-        pTwoSign;
-
-    const btn = document.querySelector('.formBtn')
-    btn.addEventListener('click', () => {
-        const playerNames = getPlayerNames()
+    const theForm = document.querySelector('.player-form-container')
+    const formBtn = document.querySelector('.formBtn')
+    formBtn.addEventListener('click', ()=>{
         const playerSigns = getPlayerTags()
-        console.log(playerNames, playerSigns)
+        console.log(playerSigns)
+        if (playerSigns.p1Tag === playerSigns.p2Tag){
+            alert('You cannot choose the same sign for both players!')
+            return
+        }
+        else{theForm.style.display = 'none'}
     })
+})()
+
+const restartBtn = (()=>{
+    let btn = document.querySelector('.restart')
 })()
