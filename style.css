@@ -1,0 +1,90 @@
+body {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+h1 > a {
+    text-decoration: none;
+    color: black;
+}
+
+h1 {
+    text-align: center;
+    padding: 25px;
+    border-bottom: 5px solid rgb(71, 69, 69);
+    background-color: silver;
+    margin-top: 0;
+}
+
+.current-player {
+    text-align: center;
+    padding: 25px;
+    margin-bottom: -120px;
+    font-size: xx-large;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.restart    {
+    width: 120px;
+    height: 40px;
+    background: #f3f0f1;
+    border-radius: 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    margin-bottom: 10px;
+}
+
+.container {
+        width: 100%;
+        height: 100%;
+        margin-top: 125px;
+}
+
+.container-game {
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 40%;
+}
+
+.player-form-container {
+    display: flex;
+    justify-content: center;
+    margin-left: 25%;
+    width: 50%;
+    height: 50%;
+    background-color: antiquewhite;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.box {
+    width: 173px;
+    height: 173px;
+    text-align: center;
+    line-height: 150px;
+    font-size: 150px;
+    cursor: pointer;
+}
+
+.box:hover {
+    background-color: rgba(192, 192, 192, 0.473);
+}
+
+.box {
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
+    border-left: 3px solid black;
+    border-top: 3px solid black;
+}
