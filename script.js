@@ -3,13 +3,8 @@ function Player(name, tag) {
     this.tag = tag
 };
 
-
-const enterPlayerInfo = (() => {
-    const form = document.createElement('input')
-    const formContainer = document.querySelector('.player-form-container')
-})()
-
-const player1 = new Player('Haris', 'X');
+let playerOne;
+let playerTwo;
 
 const gameBoard = (() => {
     const makeSquare = document.querySelector('.container-game')
@@ -22,14 +17,8 @@ const gameBoard = (() => {
         makeSquare.appendChild(div)
         div.classList.add('box')
     })
+    return {board}
 })();
-
-const playerTurn = (() => {
-    const div = document.querySelector('.box')
-    div.addEventListener('click', makePlayerMove())
-});
-
-const makePlayerMove = () => {}
 
 const tagPicker = (()=> {
     const pOneTags = document.querySelectorAll('.signOne')
@@ -39,7 +28,6 @@ const tagPicker = (()=> {
     let status2 = false
 
     pOneTags.forEach((e)=>{
-        console.log('p1s firing')
         e.addEventListener('click', () => {
             if (status === false) {
                 e.classList.add('signBorder')
@@ -55,9 +43,7 @@ const tagPicker = (()=> {
         })
     })
 
-
     pTwoTags.forEach((e)=>{
-        console.log('p2s firing')
         e.addEventListener('click', () => {
             if (status2 === false) {
                 e.classList.add('signBorder')
@@ -74,7 +60,7 @@ const tagPicker = (()=> {
     })
 })()
 
-function getPlayerNames() {
+const getPlayerNames = () => {
     const player1 = document.querySelector('.fPlayerName')
     const player2 = document.querySelector('.sPlayerName')
     let p1 = player1.value
@@ -104,8 +90,10 @@ function getPlayerTags(){
 }
 
 const submitForm = (() => {
+
     const theForm = document.querySelector('.player-form-container')
     const formBtn = document.querySelector('.formBtn')
+
     formBtn.addEventListener('click', ()=>{
         const playerSigns = getPlayerTags()
         console.log(playerSigns)
@@ -114,9 +102,62 @@ const submitForm = (() => {
             return
         }
         else{theForm.style.display = 'none'}
+
+        playerOne = new Player(getPlayerNames().p1, playerSigns.p1Tag)
+        playerTwo = new Player(getPlayerNames().p2, playerSigns.p2Tag)
+
+        const playerIndicator = document.querySelector('.current-player')
+
+        if (playerOne.tag === 'X') {
+            playerIndicator.innerText = `${playerOne.name} (${playerOne.tag}) to play`
+        }
+        else if (playerTwo.tag === 'X') {
+            playerIndicator.innerText = `${playerTwo.name} (${playerTwo.tag}) to play`
+        }
     })
 })()
 
-const restartBtn = (()=>{
-    let btn = document.querySelector('.restart')
+const game = (() => {
+    const board = gameBoard.board;
+    let turn = 0;
+    
+    const winningAxes = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6],
+    ];
+
+    const fields = document.querySelectorAll('.box')
+
+    fields.forEach((e)=>{
+        e.addEventListener('click', () => {
+            console.log(e)
+            if (turn % 2 === 0) {
+                console.log('it is')
+                e.textContent = 'X'
+                board[turn] = 'X'
+                turn += 1
+            }
+            else {
+                console.log('it isnt')
+                e.textContent = 'O'
+                board[turn] = 'O'
+                turn += 1
+            }
+            if (turn >= 5){
+                checkWinner()
+            }
+        })
+    })
+
+    function checkWinner() {
+
+        console.log(board)
+    }
 })()
+
