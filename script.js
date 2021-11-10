@@ -9,6 +9,7 @@ let playerTwo;
 const gameBoard = (() => {
     const makeSquare = document.querySelector('.container-game')
     let board = []
+    let boxes = []
     for (let i = 0; i < 9; i++) {
         board.push('')
     }
@@ -16,8 +17,9 @@ const gameBoard = (() => {
         const div = document.createElement('div')
         makeSquare.appendChild(div)
         div.classList.add('box')
+        boxes.push(div)
     })
-    return {board}
+    return {board, boxes}
 })();
 
 const tagPicker = (()=> {
@@ -114,12 +116,16 @@ const submitForm = (() => {
         else if (playerTwo.tag === 'X') {
             playerIndicator.innerText = `${playerTwo.name} (${playerTwo.tag}) to play`
         }
+        return {playerOne, playerTwo}
     })
 })()
 
 const game = (() => {
     const board = gameBoard.board;
     let turn = 0;
+    let currentPlayer;
+    
+
     
     const winningAxes = [
         [0,1,2],
@@ -134,19 +140,35 @@ const game = (() => {
 
     const fields = document.querySelectorAll('.box')
 
+    function checkCurrentPlayer() {
+        if(playerOne.tag === 'X') {
+            currentPlayer = playerOne
+        }
+    }
+
     fields.forEach((e)=>{
         e.addEventListener('click', () => {
-            console.log(e)
-            if (turn % 2 === 0) {
-                console.log('it is')
-                e.textContent = 'X'
-                board[turn] = 'X'
+
+            if (turn % 2 === 0 && e.textContent === '') {
+                if(playerOne.tag === 'X'){
+                    currentPlayer = playerOne
+                    e.textContent = playerOne.tag
+                }
+                else {
+                    currentPlayer = playerTwo
+                    e.textContent = playerTwo.tag
+                }
                 turn += 1
             }
-            else {
-                console.log('it isnt')
-                e.textContent = 'O'
-                board[turn] = 'O'
+            else if (turn % 2 !== 0 && e.textContent === '') {
+                if(playerOne.tag === 'O'){
+                    currentPlayer = playerOne
+                    e.textContent = playerOne.tag
+                }
+                else {
+                    currentPlayer = playerTwo
+                    e.textContent = playerTwo.tag
+                }
                 turn += 1
             }
             if (turn >= 5){
@@ -156,8 +178,51 @@ const game = (() => {
     })
 
     function checkWinner() {
-
-        console.log(board)
+        const isSame = currentArray => currentArray.every(v => v === currentArray[0])
+        let times = 0;
+        for(let i = 0; i< winningAxes.length; i++){
+            for(let j = 0; j < 3; j++) { 
+                winningAxes[i][j] = gameBoard.boxes[times].textContent
+                if(isSame(winningAxes[i]) === true && 
+                    winningAxes[i][0] != '' &&
+                    winningAxes[i][1] != '' &&
+                    winningAxes[i][1] != ''){
+                    alert(`The winning player is ${currentPlayer.name} (${currentPlayer.tag})! Congratulations!`)
+                    return
+                }
+                times += 1
+            }
+        }
     }
 })()
 
+/*
+const winningAxes = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
+    [2,4,6],
+];
+
+
+const fields = document.querySelectorAll('.box')
+fields.forEach((e)=>{
+    e.addEventListener('click', () => {
+        console.log(e)
+        e.textContent = 'O'
+        console.log(gameBoard.boxes)
+    })
+})
+
+function check() {
+    if( gameBoard.boxes[0].textContent === 'X' || 'O' && 
+        gameBoard.boxes[1].textContent === 'X' || 'O' && 
+        gameBoard.boxes[2].textContent === 'X' || 'O') {
+        
+    }
+}
+*/
