@@ -25,45 +25,7 @@ const gameBoard = (() => {
 
 //Function for applyin the border around the X and O signs when choosing which player is which sign. 
 //Also making sure the signs can't be same and that each player can only select one sign.
-const tagPicker = (()=> {
-    const pOneTags = document.querySelectorAll('.signOne')
-    const pTwoTags = document.querySelectorAll('.signTwo')
 
-    let status = false
-    let status2 = false
-
-    pOneTags.forEach((e)=>{
-        e.addEventListener('click', () => {
-            if (status === false) {
-                e.classList.add('signBorder')
-                status = true         
-            }
-            else if (status === true) {
-                if(e.classList.contains('signBorder')) {
-                    e.classList.remove('signBorder')
-                    status = false
-                }
-                else {return}
-            }
-        })
-    })
-
-    pTwoTags.forEach((e)=>{
-        e.addEventListener('click', () => {
-            if (status2 === false) {
-                e.classList.add('signBorder')
-                status2 = true         
-            }
-            else if (status2 === true) {
-                if(e.classList.contains('signBorder')) {
-                    e.classList.remove('signBorder')
-                    status2 = false
-                }
-                else {return}
-            }
-        })
-    })
-})()
 
 //Function for extracting the player name inputs for later use in submitForm().
 const getPlayerNames = () => {
@@ -98,7 +60,47 @@ function getPlayerTags(){
 
 //Functionality for the submit button prompt.
 //Hides the pop up window and creates the two player classes and also extracts them for later use in game().
-const submitForm = (() => {
+const formWindowsFunctions = (() => {
+
+    const tagPicker = (()=> {
+        const pOneTags = document.querySelectorAll('.signOne')
+        const pTwoTags = document.querySelectorAll('.signTwo')
+    
+        let status = false
+        let status2 = false
+    
+        pOneTags.forEach((e)=>{
+            e.addEventListener('click', () => {
+                if (status === false) {
+                    e.classList.add('signBorder')
+                    status = true         
+                }
+                else if (status === true) {
+                    if(e.classList.contains('signBorder')) {
+                        e.classList.remove('signBorder')
+                        status = false
+                    }
+                    else {return}
+                }
+            })
+        })
+    
+        pTwoTags.forEach((e)=>{
+            e.addEventListener('click', () => {
+                if (status2 === false) {
+                    e.classList.add('signBorder')
+                    status2 = true         
+                }
+                else if (status2 === true) {
+                    if(e.classList.contains('signBorder')) {
+                        e.classList.remove('signBorder')
+                        status2 = false
+                    }
+                    else {return}
+                }
+            })
+        })
+    }) ()
 
     const theForm = document.querySelector('.player-form-container')
     const formBtn = document.querySelector('.formBtn')
@@ -181,6 +183,7 @@ const game = (() => {
         })
     })
 
+    let winner = 0
     //This function takes the value (div.value) and textContent (div.content) of every box clicked.
     //It matches the value with the coresponding winningAxes numbers and repplaces those numbers with the sign (textContent) of each box
     function checkWinner(boxValue, boxContent) {
@@ -194,11 +197,14 @@ const game = (() => {
                     winningAxes[i][index] = boxContent
                 }
             })
-
+            winner += 1
             if(isSame(winningAxes[i])) {
-                alert(`The winner is ${currentPlayer.name}!!`)
+                return alert(`The winner is ${currentPlayer.name}!!`)
             }
-
+            else if(winner === 72) {
+                alert("it's a tie!")
+            }
         }
+        console.log(winner)
     }
 })()
