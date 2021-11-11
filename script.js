@@ -6,6 +6,7 @@ function Player(name, tag) {
 let playerOne;
 let playerTwo;
 
+//Creating the board and putting each individual div into the boxes array for later use in the game() function
 const gameBoard = (() => {
     const makeSquare = document.querySelector('.container-game')
     let board = []
@@ -16,12 +17,14 @@ const gameBoard = (() => {
     board.forEach((e) => {
         const div = document.createElement('div')
         makeSquare.appendChild(div)
-        div.classList.add('box')
+        div.classList.add('box') 
         boxes.push(div)
     })
     return {board, boxes}
 })();
 
+//Function for applyin the border around the X and O signs when choosing which player is which sign. 
+//Also making sure the signs can't be same and that each player can only select one sign.
 const tagPicker = (()=> {
     const pOneTags = document.querySelectorAll('.signOne')
     const pTwoTags = document.querySelectorAll('.signTwo')
@@ -62,6 +65,7 @@ const tagPicker = (()=> {
     })
 })()
 
+//Function for extracting the player name inputs for later use in submitForm().
 const getPlayerNames = () => {
     const player1 = document.querySelector('.fPlayerName')
     const player2 = document.querySelector('.sPlayerName')
@@ -70,6 +74,7 @@ const getPlayerNames = () => {
     return {p1, p2}
 }
 
+//Function for storing the right (selected) sign for later use in submitForm()
 function getPlayerTags(){
     const pOneTags = document.querySelectorAll('.signOne')
     const pTwoTags = document.querySelectorAll('.signTwo')
@@ -91,6 +96,8 @@ function getPlayerTags(){
     return {p1Tag, p2Tag}
 }
 
+//Functionality for the submit button prompt.
+//Hides the pop up window and creates the two player classes and also extracts them for later use in game().
 const submitForm = (() => {
 
     const theForm = document.querySelector('.player-form-container')
@@ -102,14 +109,12 @@ const submitForm = (() => {
         if (playerSigns.p1Tag === playerSigns.p2Tag){
             alert('You cannot choose the same sign for both players!')
             return
-        }
-        else{theForm.style.display = 'none'}
+        } else{theForm.style.display = 'none'}
 
         playerOne = new Player(getPlayerNames().p1, playerSigns.p1Tag)
         playerTwo = new Player(getPlayerNames().p2, playerSigns.p2Tag)
 
         const playerIndicator = document.querySelector('.current-player')
-
         if (playerOne.tag === 'X') {
             playerIndicator.innerText = `${playerOne.name} (${playerOne.tag}) to play`
         }
@@ -120,14 +125,14 @@ const submitForm = (() => {
     })
 })()
 
+//The main function which creates the game
 const game = (() => {
-    const board = gameBoard.board;
     let turn = 0;
     let currentPlayer;
-    
+    let valNum = 0
 
     
-    const winningAxes = [
+    let winningAxes = [
         [0,1,2],
         [3,4,5],
         [6,7,8],
@@ -138,14 +143,15 @@ const game = (() => {
         [2,4,6],
     ];
 
+    //Aplies the right value for each div.box on the board for later use in checkWinner() where the values are matched with the corresponding number in winningAxes array
     const fields = document.querySelectorAll('.box')
+    fields.forEach((e)=> {
+        e.value = valNum
+        valNum += 1
+        console.log(e)
+    })
 
-    function checkCurrentPlayer() {
-        if(playerOne.tag === 'X') {
-            currentPlayer = playerOne
-        }
-    }
-
+    //Function which puts the X and O markers on the boards (div.box) while also keeping track of the current player.
     fields.forEach((e)=>{
         e.addEventListener('click', () => {
 
@@ -171,58 +177,28 @@ const game = (() => {
                 }
                 turn += 1
             }
-            if (turn >= 5){
-                checkWinner()
-            }
+            checkWinner(e.value, e.textContent)
         })
     })
 
-    function checkWinner() {
-        const isSame = currentArray => currentArray.every(v => v === currentArray[0])
-        let times = 0;
-        for(let i = 0; i< winningAxes.length; i++){
-            for(let j = 0; j < 3; j++) { 
-                winningAxes[i][j] = gameBoard.boxes[times].textContent
-                if(isSame(winningAxes[i]) === true && 
-                    winningAxes[i][0] != '' &&
-                    winningAxes[i][1] != '' &&
-                    winningAxes[i][1] != ''){
-                    alert(`The winning player is ${currentPlayer.name} (${currentPlayer.tag})! Congratulations!`)
-                    return
+    //This function takes the value (div.value) and textContent (div.content) of every box clicked.
+    //It matches the value with the coresponding winningAxes numbers and repplaces those numbers with the sign (textContent) of each box
+    function checkWinner(boxValue, boxContent) {
+        //This function checks whether an array's items are all the same ([X,X,X] = true). For figuring out if the winning condition has been met. 
+        const isSame = currentArray => currentArray.every(value => value === currentArray[0])
+        
+        for (let i = 0; i <= 7; i++) {
+            let index = winningAxes[i].indexOf(boxValue)
+            winningAxes[i].forEach((item)=> {
+                if(boxValue === item) {
+                    winningAxes[i][index] = boxContent
                 }
-                times += 1
+            })
+
+            if(isSame(winningAxes[i])) {
+                alert(`The winner is ${currentPlayer.name}!!`)
             }
+
         }
     }
 })()
-
-/*
-const winningAxes = [
-    [0,1,2],
-    [3,4,5],
-    [6,7,8],
-    [0,3,6],
-    [1,4,7],
-    [2,5,8],
-    [0,4,8],
-    [2,4,6],
-];
-
-
-const fields = document.querySelectorAll('.box')
-fields.forEach((e)=>{
-    e.addEventListener('click', () => {
-        console.log(e)
-        e.textContent = 'O'
-        console.log(gameBoard.boxes)
-    })
-})
-
-function check() {
-    if( gameBoard.boxes[0].textContent === 'X' || 'O' && 
-        gameBoard.boxes[1].textContent === 'X' || 'O' && 
-        gameBoard.boxes[2].textContent === 'X' || 'O') {
-        
-    }
-}
-*/
